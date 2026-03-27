@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KPI Records — KPI Tracker</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">K</div>
+      <span>KPI Tracker</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">&#9732;</span> Dashboard</a>
+      <a href="employees.html" class="nav-item"><span class="nav-icon">&#9786;</span> Employees</a>
+      <a href="kpi.html" class="nav-item active"><span class="nav-icon">&#9650;</span> KPI Records</a>
+      <a href="attendance.html" class="nav-item"><span class="nav-icon">&#9632;</span> Attendance</a>
+      <a href="reports.html" class="nav-item"><span class="nav-icon">&#9635;</span> Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar av-blue" style="width:32px;height:32px;font-size:12px">AD</div>
+        <div>
+          <div style="font-size:13px;font-weight:500">Admin</div>
+          <div style="font-size:11px;color:#94a3b8">HR Manager</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div>
+        <h2 class="page-title">KPI Records</h2>
+        <p class="page-sub">Track and update employee performance indicators</p>
+      </div>
+      <button class="btn btn-primary" onclick="openKpiModal()">+ Add KPI Entry</button>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="metric-grid" id="kpi-metrics"></div>
+
+    <!-- KPI TABLE -->
+    <div class="card">
+      <div class="card-header" style="margin-bottom:1rem">
+        <span class="card-title">All KPI Entries</span>
+        <select id="kpiDeptFilter" onchange="filterKpi()">
+          <option value="">All Departments</option>
+          <option>Sales</option><option>HR</option>
+          <option>Operations</option><option>Finance</option><option>IT</option>
+        </select>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>KPI Category</th>
+            <th>Target</th>
+            <th>Achieved</th>
+            <th>Score</th>
+            <th>Period</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="kpiTableBody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- KPI MODAL -->
+<div class="modal-overlay" id="kpiModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="kpiModalTitle">Add KPI Entry</h3>
+      <button class="modal-close" onclick="closeKpiModal()">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="kpiId"/>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Employee</label>
+          <select id="kpiEmployee"></select>
+        </div>
+        <div class="form-group">
+          <label>KPI Category</label>
+          <select id="kpiCategory">
+            <option>Sales Revenue</option>
+            <option>Task Completion</option>
+            <option>Customer Satisfaction</option>
+            <option>Project Delivery</option>
+            <option>Quality Score</option>
+            <option>Training Hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Target Value</label>
+          <input type="number" id="kpiTarget" placeholder="e.g. 100"/>
+        </div>
+        <div class="form-group">
+          <label>Achieved Value</label>
+          <input type="number" id="kpiAchieved" placeholder="e.g. 85"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Period (Month/Quarter)</label>
+          <input type="text" id="kpiPeriod" placeholder="e.g. Q1 2026"/>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <input type="text" id="kpiNotes" placeholder="Optional notes"/>
+        </div>
+      </div>
+      <div id="kpi-form-error" class="alert alert-danger" style="display:none"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeKpiModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveKpi()">Save KPI</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="auth.js"></script>
+<script src="kpi.js"></script>
+</body>
+</html>

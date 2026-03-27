@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Employees — KPI Tracker</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">K</div>
+      <span>KPI Tracker</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">&#9732;</span> Dashboard</a>
+      <a href="employees.html" class="nav-item active"><span class="nav-icon">&#9786;</span> Employees</a>
+      <a href="kpi.html" class="nav-item"><span class="nav-icon">&#9650;</span> KPI Records</a>
+      <a href="attendance.html" class="nav-item"><span class="nav-icon">&#9632;</span> Attendance</a>
+      <a href="reports.html" class="nav-item"><span class="nav-icon">&#9635;</span> Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar av-blue" style="width:32px;height:32px;font-size:12px">AD</div>
+        <div>
+          <div style="font-size:13px;font-weight:500">Admin</div>
+          <div style="font-size:11px;color:#94a3b8">HR Manager</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div>
+        <h2 class="page-title">Employees</h2>
+        <p class="page-sub">Manage employee directory and profiles</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAddModal()">+ Add Employee</button>
+    </div>
+
+    <!-- SEARCH & FILTER -->
+    <div class="card" style="margin-bottom:1rem">
+      <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="Search by name or department..." oninput="filterEmployees()" style="flex:1;max-width:320px"/>
+        <select id="deptFilter" onchange="filterEmployees()">
+          <option value="">All Departments</option>
+          <option>Sales</option>
+          <option>HR</option>
+          <option>Operations</option>
+          <option>Finance</option>
+          <option>IT</option>
+        </select>
+        <select id="statusFilter" onchange="filterEmployees()">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- EMPLOYEE TABLE -->
+    <div class="card">
+      <table class="data-table" id="empTable">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>KPI Score</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="empTableBody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="empModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Employee</h3>
+      <button class="modal-close" onclick="closeModal()">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="empId"/>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="empName" placeholder="e.g. Arun Raj"/>
+        </div>
+        <div class="form-group">
+          <label>Employee ID</label>
+          <input type="text" id="empCode" placeholder="e.g. EMP001"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Department</label>
+          <select id="empDept">
+            <option>Sales</option>
+            <option>HR</option>
+            <option>Operations</option>
+            <option>Finance</option>
+            <option>IT</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Role / Designation</label>
+          <input type="text" id="empRole" placeholder="e.g. Team Lead"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="empEmail" placeholder="name@company.com"/>
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="empPhone" placeholder="+91 XXXXX XXXXX"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Join Date</label>
+          <input type="date" id="empJoin"/>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="empStatus">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div id="form-error" class="alert alert-danger" style="display:none"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEmployee()">Save Employee</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="modal-overlay" id="viewModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Employee Profile</h3>
+      <button class="modal-close" onclick="closeViewModal()">&#10005;</button>
+    </div>
+    <div class="modal-body" id="viewModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeViewModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="auth.js"></script>
+<script src="employees.js"></script>
+</body>
+</html>

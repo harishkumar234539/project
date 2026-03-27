@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reports — KPI Tracker</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">K</div>
+      <span>KPI Tracker</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">&#9732;</span> Dashboard</a>
+      <a href="employees.html" class="nav-item"><span class="nav-icon">&#9786;</span> Employees</a>
+      <a href="kpi.html" class="nav-item"><span class="nav-icon">&#9650;</span> KPI Records</a>
+      <a href="attendance.html" class="nav-item"><span class="nav-icon">&#9632;</span> Attendance</a>
+      <a href="reports.html" class="nav-item active"><span class="nav-icon">&#9635;</span> Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar av-blue" style="width:32px;height:32px;font-size:12px">AD</div>
+        <div>
+          <div style="font-size:13px;font-weight:500">Admin</div>
+          <div style="font-size:11px;color:#94a3b8">HR Manager</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div>
+        <h2 class="page-title">Reports</h2>
+        <p class="page-sub">Performance summaries and analytics</p>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Department Performance</span></div>
+        <div style="position:relative;height:260px">
+          <canvas id="deptBarChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">KPI Score Distribution</span></div>
+        <div style="position:relative;height:260px">
+          <canvas id="scoreDistChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Monthly Attendance %</span></div>
+        <div style="position:relative;height:240px">
+          <canvas id="attLineChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">KRI Summary</span></div>
+        <div id="kri-report-list"></div>
+      </div>
+    </div>
+
+    <!-- FULL EMPLOYEE REPORT -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Full Employee Performance Report</span>
+        <button class="btn btn-secondary" onclick="printReport()">Print Report</button>
+      </div>
+      <table class="data-table" id="fullReportTable">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Avg KPI Score</th>
+            <th>Attendance %</th>
+            <th>KRI Status</th>
+            <th>Overall Rating</th>
+          </tr>
+        </thead>
+        <tbody id="reportTableBody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="data.js"></script>
+<script src="auth.js"></script>
+<script src="reports.js"></script>
+</body>
+</html>

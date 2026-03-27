@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Attendance — KPI Tracker</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">K</div>
+      <span>KPI Tracker</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">&#9732;</span> Dashboard</a>
+      <a href="employees.html" class="nav-item"><span class="nav-icon">&#9786;</span> Employees</a>
+      <a href="kpi.html" class="nav-item"><span class="nav-icon">&#9650;</span> KPI Records</a>
+      <a href="attendance.html" class="nav-item active"><span class="nav-icon">&#9632;</span> Attendance</a>
+      <a href="reports.html" class="nav-item"><span class="nav-icon">&#9635;</span> Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="avatar av-blue" style="width:32px;height:32px;font-size:12px">AD</div>
+        <div>
+          <div style="font-size:13px;font-weight:500">Admin</div>
+          <div style="font-size:11px;color:#94a3b8">HR Manager</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div>
+        <h2 class="page-title">Attendance</h2>
+        <p class="page-sub">Daily attendance tracking and records</p>
+      </div>
+      <button class="btn btn-primary" onclick="openAttModal()">+ Mark Attendance</button>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="metric-grid" id="att-metrics"></div>
+
+    <!-- ATTENDANCE TABLE -->
+    <div class="card">
+      <div class="card-header" style="margin-bottom:1rem">
+        <span class="card-title">Attendance Records</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="date" id="dateFilter" onchange="filterAtt()"/>
+          <select id="attDeptFilter" onchange="filterAtt()">
+            <option value="">All Departments</option>
+            <option>Sales</option><option>HR</option>
+            <option>Operations</option><option>Finance</option><option>IT</option>
+          </select>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Date</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="attTableBody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- ATTENDANCE MODAL -->
+<div class="modal-overlay" id="attModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="attModalTitle">Mark Attendance</h3>
+      <button class="modal-close" onclick="closeAttModal()">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="attId"/>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Employee</label>
+          <select id="attEmployee"></select>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="attDate"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Check In Time</label>
+          <input type="time" id="attCheckIn"/>
+        </div>
+        <div class="form-group">
+          <label>Check Out Time</label>
+          <input type="time" id="attCheckOut"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="attStatus">
+          <option value="present">Present</option>
+          <option value="absent">Absent</option>
+          <option value="half-day">Half Day</option>
+          <option value="leave">On Leave</option>
+        </select>
+      </div>
+      <div id="att-form-error" class="alert alert-danger" style="display:none"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeAttModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAttendance()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="auth.js"></script>
+<script src="attendance.js"></script>
+</body>
+</html>
