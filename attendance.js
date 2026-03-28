@@ -6,7 +6,6 @@ window.onload = function () {
   populateEmpDropdown();
   renderAttMetrics();
   renderAttTable(getAttendance());
-  // Set today's date as default in date filter
   document.getElementById('attDate') && (document.getElementById('attDate').value = todayStr());
 };
 
@@ -30,14 +29,13 @@ function renderAttMetrics() {
   const present = records.filter(r => r.status === 'present').length;
   const absent  = records.filter(r => r.status === 'absent').length;
   const half    = records.filter(r => r.status === 'half-day').length;
-  const leave   = records.filter(r => r.status === 'leave').length;
   const rate    = total ? Math.round(((present + half) / total) * 100) : 0;
 
   const metrics = [
-    { label: 'Total Records',   value: total,       sub: 'All entries'     },
-    { label: 'Present',         value: present,     sub: 'Full day'        },
-    { label: 'Absent',          value: absent,      sub: 'No show'         },
-    { label: 'Overall Rate',    value: rate + '%',  sub: 'Present + half', cls: rate >= 85 ? 'up' : 'down' },
+    { label: 'Total Records',  value: total,      sub: 'All entries'     },
+    { label: 'Present',        value: present,    sub: 'Full day'        },
+    { label: 'Absent',         value: absent,     sub: 'No show'         },
+    { label: 'Overall Rate',   value: rate + '%', sub: 'Present + half', cls: rate >= 85 ? 'up' : 'down' },
   ];
 
   document.getElementById('att-metrics').innerHTML = metrics.map(m => `
@@ -92,13 +90,15 @@ function filterAtt() {
 // --- OPEN ADD MODAL ---
 function openAttModal() {
   document.getElementById('attModalTitle').textContent = 'Mark Attendance';
-  document.getElementById('attId').value      = '';
-  document.getElementById('attDate').value    = todayStr();
-  document.getElementById('attCheckIn').value = '';
-  document.getElementById('attCheckOut').value= '';
-  document.getElementById('attStatus').value  = 'present';
+  document.getElementById('attId').value       = '';
+  document.getElementById('attDate').value     = todayStr();
+  document.getElementById('attCheckIn').value  = '';
+  document.getElementById('attCheckOut').value = '';
+  document.getElementById('attStatus').value   = 'present';
   document.getElementById('att-form-error').style.display = 'none';
   document.getElementById('attModal').style.display = 'flex';
+  // Refresh dropdown so newly added employees appear
+  populateEmpDropdown();
 }
 
 // --- OPEN EDIT MODAL ---
@@ -117,7 +117,8 @@ function editAtt(id) {
 }
 
 // --- SAVE ATTENDANCE ---
-function saveAttendance() {
+// NOTE: renamed to saveAttRecord to avoid conflict with saveAttendance() in data.js
+function saveAttRecord() {
   const id       = document.getElementById('attId').value;
   const empId    = parseInt(document.getElementById('attEmployee').value);
   const date     = document.getElementById('attDate').value;
@@ -134,13 +135,16 @@ function saveAttendance() {
   let records = getAttendance();
 
   if (id) {
+    // Edit existing record
     records = records.map(r =>
       r.id === parseInt(id) ? { ...r, empId, date, checkIn, checkOut, status } : r
     );
   } else {
+    // Add new record
     records.push({ id: nextId(records), empId, date, checkIn, checkOut, status });
   }
 
+  // This calls saveAttendance from data.js correctly now
   saveAttendance(records);
   closeAttModal();
   renderAttMetrics();
